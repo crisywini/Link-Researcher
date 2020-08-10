@@ -188,7 +188,7 @@ public class ModelTest {
 	@Transactional(value = TransactionMode.ROLLBACK)
 	public void getRelevantResultByStatusTest() {
 		TypedQuery<RelevantResult> query = entityManager.createNamedQuery(RelevantResult.GET_BY_STATUS, RelevantResult.class);
-		query.setParameter("status", Status.GREEN);
+		query.setParameter("status", Status.RED);
 		List<RelevantResult> result = query.getResultList();
 		System.out.println(result);
 	}
