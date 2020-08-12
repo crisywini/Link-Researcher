@@ -65,5 +65,7 @@
 	<modules>
 		<module>PersistenceProject</module>
 		<module>TestProject</module>
+		<module>EARProject</module>
+		<module>BusinessProject</module>
 	</modules>
 </project>
