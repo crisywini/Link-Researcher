@@ -41,7 +41,7 @@ public class Search implements Serializable {
 	private long numberOfResults;
 
 	@JoinColumn(name = "relevant_results")
-	@OneToMany(mappedBy = "releatedSearch") // Entidad no propietaria -> inversa
+	@OneToMany(mappedBy = "releatedSearch", cascade = CascadeType.REMOVE) // Entidad no propietaria -> inversa
 	private List<RelevantResult> relevantResults;
 
 	@JoinColumn(name = "releated_research")
@@ -69,6 +69,14 @@ public class Search implements Serializable {
 		this.equation = equation;
 		this.numberOfResults = numberOfResults;
 		this.relevantResults = relevantResults;
+		this.releatedResearch = releatedResearch;
+	}
+	public Search(String searchEngine, String equation, long numberOfResults,
+			Research releatedResearch) {
+		super();
+		this.searchEngine = searchEngine;
+		this.equation = equation;
+		this.numberOfResults = numberOfResults;
 		this.releatedResearch = releatedResearch;
 	}
 

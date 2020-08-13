@@ -2,6 +2,7 @@ package co.crisi.linkresearcher.entities;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -39,6 +40,7 @@ public class Research implements Serializable {
 	
 	public Research() {
 		super();
+		
 	}   
 	
 	public Research(String name, List<Search> searches) {
@@ -51,6 +53,7 @@ public class Research implements Serializable {
 	public Research(String name) {
 		super();
 		this.name = name;
+		searches = new ArrayList<Search>();
 	}
 
 	public int getId() {

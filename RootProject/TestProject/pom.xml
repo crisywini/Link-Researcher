@@ -95,5 +95,11 @@
 			<artifactId>PersistenceProject</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>co.crisifactory.linkResearcher</groupId>
+			<artifactId>BusinessProject</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<type>ejb</type>
+		</dependency>
 	</dependencies>
 </project>
