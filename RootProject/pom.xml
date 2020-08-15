@@ -67,5 +67,6 @@
 		<module>TestProject</module>
 		<module>EARProject</module>
 		<module>BusinessProject</module>
+		<module>DesktopProject</module>
 	</modules>
 </project>

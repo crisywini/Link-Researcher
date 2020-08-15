@@ -16,9 +16,10 @@ import co.crisi.linkresearcher.entities.Research;
 import co.crisi.linkresearcher.entities.Search;
 import co.crisi.linkresearcher.entities.Status;
 
-
 @Remote
 public interface AdministratorEJBRemote {
+
+	static final String JNDI = "java:global/EARProject/BusinessProject/AdministratorEJB!co.crisi.linkresearcher.ejb.AdministratorEJB, java:global/EARProject/BusinessProject/AdministratorEJB!co.crisi.linkresearcher.ejb.AdministratorEJBRemote";
 
 	boolean removeRelevantResult(String link) throws NullRelevantResultException;
 
