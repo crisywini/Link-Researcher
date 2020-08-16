@@ -12,13 +12,13 @@ import javax.persistence.*;
  *
  */
 @Entity
-@NamedQueries({
-	@NamedQuery(name = Search.GET_ALL, query = "SELECT s FROM Search s"),
-	@NamedQuery(name = Search.GET_BY_EQUATION, query = "SELECT s FROM Search s WHERE s.equation = :equation"),
-	@NamedQuery(name = Search.GET_BY_SOME_EQUATION, query = "SELECT s FROM Search s WHERE UPPER(s.equation) LIKE CONCAT('%',:equation,'%')"),
-	@NamedQuery(name = Search.GET_BY_SEARCH_ENGINE, query = "SELECT s FROM Search s WHERE s.searchEngine = :searchEngine"),
-	@NamedQuery(name = Search.GET_BY_SOME_SEARCH_ENGINE, query = "SELECT s FROM Search s WHERE UPPER(s.searchEngine) LIKE CONCAT('%',:searchEngine,'%')"),
-	@NamedQuery(name = Search.GET_BY_DATE, query = "SELECT s FROM Search s WHERE s.date = :date")
+@NamedQueries({ @NamedQuery(name = Search.GET_ALL, query = "SELECT s FROM Search s"),
+		@NamedQuery(name = Search.GET_BY_EQUATION, query = "SELECT s FROM Search s WHERE s.equation = :equation"),
+		@NamedQuery(name = Search.GET_BY_SOME_EQUATION, query = "SELECT s FROM Search s WHERE UPPER(s.equation) LIKE CONCAT('%',:equation,'%')"),
+		@NamedQuery(name = Search.GET_BY_SEARCH_ENGINE, query = "SELECT s FROM Search s WHERE s.searchEngine = :searchEngine"),
+		@NamedQuery(name = Search.GET_BY_SOME_SEARCH_ENGINE, query = "SELECT s FROM Search s WHERE UPPER(s.searchEngine) LIKE CONCAT('%',:searchEngine,'%')"),
+		@NamedQuery(name = Search.GET_BY_DATE, query = "SELECT s FROM Search s WHERE s.date = :date"),
+		@NamedQuery(name = Search.GET_BY_RESEARCH, query = "SELECT COUNT(s) FROM Search s WHERE s.releatedResearch.name = :researchName") 
 })
 public class Search implements Serializable {
 
@@ -49,14 +49,15 @@ public class Search implements Serializable {
 	private Research releatedResearch;
 
 	private static final long serialVersionUID = 1L;
-	
-	//QUERIES
+
+	// QUERIES
 	public static final String GET_ALL = "Search_getAll";
 	public static final String GET_BY_EQUATION = "Search_getByEquation";
 	public static final String GET_BY_SOME_EQUATION = "Search_getBySomeEquation";
 	public static final String GET_BY_SEARCH_ENGINE = "Search_getBySearchEngine";
 	public static final String GET_BY_SOME_SEARCH_ENGINE = "Search_getBySomeSearchEngine";
 	public static final String GET_BY_DATE = "Search_getByDate";
+	public static final String GET_BY_RESEARCH = "Search_getByResearch";
 
 	public Search() {
 		super();
@@ -71,15 +72,14 @@ public class Search implements Serializable {
 		this.relevantResults = relevantResults;
 		this.releatedResearch = releatedResearch;
 	}
-	public Search(String searchEngine, String equation, long numberOfResults,
-			Research releatedResearch) {
+
+	public Search(String searchEngine, String equation, long numberOfResults, Research releatedResearch) {
 		super();
 		this.searchEngine = searchEngine;
 		this.equation = equation;
 		this.numberOfResults = numberOfResults;
 		this.releatedResearch = releatedResearch;
 	}
-
 
 	public int getId() {
 		return this.id;
@@ -164,5 +164,5 @@ public class Search implements Serializable {
 		return "Search [id=" + id + ", date=" + date + ", searchEngine=" + searchEngine + ", equation=" + equation
 				+ ", numberOfResults=" + numberOfResults + "]";
 	}
-	
+
 }

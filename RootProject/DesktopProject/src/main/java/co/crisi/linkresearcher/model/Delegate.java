@@ -12,6 +12,7 @@ import co.crisi.linkresearcher.ejb.exceptions.NullResearchException;
 import co.crisi.linkresearcher.ejb.exceptions.NullSearchException;
 import co.crisi.linkresearcher.ejb.exceptions.RepeatedRelevantResultException;
 import co.crisi.linkresearcher.ejb.exceptions.RepeatedResearchException;
+import co.crisi.linkresearcher.ejb.exceptions.UpdateException;
 import co.crisi.linkresearcher.entities.RelevantResult;
 import co.crisi.linkresearcher.entities.Research;
 import co.crisi.linkresearcher.entities.Search;
@@ -66,8 +67,8 @@ public class Delegate implements AdministratorEJBRemote {
 	}
 
 	@Override
-	public void addResearch(String name) throws RepeatedResearchException {
-		admin.addResearch(name);
+	public void addResearch(String name, String description) throws RepeatedResearchException {
+		admin.addResearch(name, description);
 	}
 
 	@Override
@@ -138,6 +139,17 @@ public class Delegate implements AdministratorEJBRemote {
 	@Override
 	public List<RelevantResult> getRelevantResultByStatus(Status status) {
 		return admin.getRelevantResultByStatus(status);
+	}
+
+	@Override
+	public void updateResearch(String originalName, String newName, String newDescription) throws UpdateException {
+		admin.updateResearch(originalName, newName, newDescription);
+		
+	}
+
+	@Override
+	public long countSearchesByResearchName(String researchName) throws NullResearchException {
+		return admin.countSearchesByResearchName(researchName);
 	}
 
 }

@@ -11,6 +11,7 @@ import co.crisi.linkresearcher.ejb.exceptions.NullResearchException;
 import co.crisi.linkresearcher.ejb.exceptions.NullSearchException;
 import co.crisi.linkresearcher.ejb.exceptions.RepeatedRelevantResultException;
 import co.crisi.linkresearcher.ejb.exceptions.RepeatedResearchException;
+import co.crisi.linkresearcher.ejb.exceptions.UpdateException;
 import co.crisi.linkresearcher.entities.RelevantResult;
 import co.crisi.linkresearcher.entities.Research;
 import co.crisi.linkresearcher.entities.Search;
@@ -19,7 +20,8 @@ import co.crisi.linkresearcher.entities.Status;
 @Remote
 public interface AdministratorEJBRemote {
 
-	static final String JNDI = "java:global/EARProject/BusinessProject/AdministratorEJB!co.crisi.linkresearcher.ejb.AdministratorEJB, java:global/EARProject/BusinessProject/AdministratorEJB!co.crisi.linkresearcher.ejb.AdministratorEJBRemote";
+//	static final String JNDI* = "java:global/EARProject/BusinessProject/AdministratorEJB!co.crisi.linkresearcher.ejb.AdministratorEJB, java:global/EARProject/BusinessProject/AdministratorEJB!co.crisi.linkresearcher.ejb.AdministratorEJBRemote";
+	static final String JNDI = "java:global/EARProject/BusinessProject/AdministratorEJB!co.crisi.linkresearcher.ejb.AdministratorEJBRemote";
 
 	boolean removeRelevantResult(String link) throws NullRelevantResultException;
 
@@ -33,7 +35,12 @@ public interface AdministratorEJBRemote {
 
 	boolean removeResearch(String name) throws NullResearchException;// PASSED TEST
 
-	void addResearch(String name) throws RepeatedResearchException;// PASSED TEST
+	void addResearch(String name, String description) throws RepeatedResearchException;// PASSED TEST
+
+	void updateResearch(String originalName, String newName, String newDescription) throws UpdateException;// PASSED
+																											// TEST
+
+	long countSearchesByResearchName(String researchName) throws NullResearchException;
 
 	List<Research> getAllResearches();
 

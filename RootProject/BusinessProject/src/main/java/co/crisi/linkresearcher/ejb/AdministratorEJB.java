@@ -1,6 +1,7 @@
 package co.crisi.linkresearcher.ejb;
 
 import java.util.Date;
+
 import java.util.List;
 
 import javax.ejb.LocalBean;
@@ -14,7 +15,7 @@ import co.crisi.linkresearcher.ejb.exceptions.NullResearchException;
 import co.crisi.linkresearcher.ejb.exceptions.NullSearchException;
 import co.crisi.linkresearcher.ejb.exceptions.RepeatedRelevantResultException;
 import co.crisi.linkresearcher.ejb.exceptions.RepeatedResearchException;
-import co.crisi.linkresearcher.ejb.exceptions.RepeatedSearchException;
+import co.crisi.linkresearcher.ejb.exceptions.UpdateException;
 import co.crisi.linkresearcher.entities.RelevantResult;
 import co.crisi.linkresearcher.entities.Research;
 import co.crisi.linkresearcher.entities.Search;
@@ -38,7 +39,7 @@ public class AdministratorEJB implements AdministratorEJBRemote {
 
 	@Override
 	public List<Research> getAllResearches() {
-		TypedQuery<Research> query = entityManager.createNamedQuery(RelevantResult.GET_ALL, Research.class);
+		TypedQuery<Research> query = entityManager.createNamedQuery(Research.GET_ALL, Research.class);
 		return query.getResultList();
 	}
 
@@ -194,14 +195,42 @@ public class AdministratorEJB implements AdministratorEJBRemote {
 	}
 
 	@Override
-	public void addResearch(String name) throws RepeatedResearchException {
+	public void addResearch(String name, String description) throws RepeatedResearchException {
 		if (!getResearchesByName(name).isEmpty()) {
 			throw new RepeatedResearchException("That name: " + name + " already exist!");
 		}
 		Research research = new Research();
 		research.setName(name);
+		research.setDescription(description);
 		entityManager.persist(research);
 
 	}
 
+	@Override
+	public void updateResearch(String originalName, String newName, String newDescription) throws UpdateException {
+
+		List<Research> query = getResearchesByName(originalName);
+		Research research = query.get(0);
+		List<Research> query2 = getResearchesByName(newName);
+		if (!query2.isEmpty()) {
+			throw new UpdateException("The new name: " + newName + " is already used!");
+		}
+		if (!newDescription.isEmpty()) {
+			research.setDescription(newDescription);
+		}
+		research.setName(newName);
+		entityManager.merge(research);
+	}
+
+	@Override
+	public long countSearchesByResearchName(String researchName) throws NullResearchException {
+
+		List<Research> query1 = getAllResearches();
+		if (query1.isEmpty()) {
+			throw new NullResearchException("The name: " + researchName + " does not exist");
+		}
+		TypedQuery<Long> query = entityManager.createNamedQuery(Search.GET_BY_RESEARCH, Long.class);
+		query.setParameter("researchName", researchName);
+		return query.getResultList().get(0);
+	}
 }

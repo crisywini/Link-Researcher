@@ -27,6 +27,10 @@ public class Research implements Serializable {
 	
 	@Column(name = "name", nullable = false)
 	private String name;
+	
+	@Column(name = "description", nullable = false)
+	private String description;
+	
 	private static final long serialVersionUID = 1L;
 
 	@JoinColumn(name = "searches")
@@ -102,6 +106,14 @@ public class Research implements Serializable {
 	@Override
 	public String toString() {
 		return "Research [id=" + id + ", name=" + name + "]";
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
    

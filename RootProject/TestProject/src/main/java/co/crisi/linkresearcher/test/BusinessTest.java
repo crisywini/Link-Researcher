@@ -2,6 +2,8 @@ package co.crisi.linkresearcher.test;
 
 import java.util.Date;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 
@@ -29,6 +31,7 @@ import co.crisi.linkresearcher.ejb.exceptions.NullResearchException;
 import co.crisi.linkresearcher.ejb.exceptions.NullSearchException;
 import co.crisi.linkresearcher.ejb.exceptions.RepeatedRelevantResultException;
 import co.crisi.linkresearcher.ejb.exceptions.RepeatedResearchException;
+import co.crisi.linkresearcher.ejb.exceptions.UpdateException;
 import co.crisi.linkresearcher.entities.Research;
 import co.crisi.linkresearcher.entities.Status;
 
@@ -52,7 +55,7 @@ public class BusinessTest {
 	@Transactional(value = TransactionMode.COMMIT)
 	public void addResearchTest() {
 		try {
-			adminEJB.addResearch("Sentiment analysis in social networks");
+			adminEJB.addResearch("Sentiment analysis in social networks", "Research for Uniquindio");
 			System.out.println("ADDED");
 		} catch (RepeatedResearchException e) {
 			e.printStackTrace();
@@ -73,7 +76,7 @@ public class BusinessTest {
 	@Test
 	@Transactional(value = TransactionMode.COMMIT)
 	public void addSearchTest() {
-		adminEJB.addSearch("Depression in social network", "ACM", "DEPRESSION", 165132100);
+		adminEJB.addSearch("Sentiment analysis 2", "ACM", "Happy birthdae", 165132100);
 		System.out.println("ADDED");
 	}
 
@@ -106,6 +109,40 @@ public class BusinessTest {
 			adminEJB.removeRelevantResult("www.twitter.google.com.co");
 			System.out.println("REMOVED!");
 		} catch (NullRelevantResultException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Transactional(value = TransactionMode.COMMIT)
+	public void getAllResearchesTest() {
+		List<Research> query = adminEJB.getAllResearches();
+		System.out.println(query.toString());
+	}
+
+	@Test
+	@Transactional(value = TransactionMode.COMMIT)
+	public void updateResearchTest() {
+		String originalName = "Sentiment analysis";
+		List<Research> query = adminEJB.getResearchesByName(originalName);
+		String newName = "Sentiment analysis 2";
+		System.out.println("First one: " + query.get(0));
+		try {
+			adminEJB.updateResearch(originalName, newName, "This project is about sentiment");
+		} catch (UpdateException e) {
+			e.printStackTrace();
+		}
+		List<Research> query2 = adminEJB.getResearchesByName(newName);
+		System.out.println("Last one: " + query2.get(0));
+	}
+
+	@Test
+	@Transactional(value = TransactionMode.COMMIT)
+	public void getCountSearchesByResearchNameTest() {
+		try {
+			long count = adminEJB.countSearchesByResearchName("Sentiment analysis 2");
+			System.out.println(count);
+		} catch (NullResearchException e) {
 			e.printStackTrace();
 		}
 	}
